@@ -10,6 +10,7 @@ namespace FedoraDev.DeveloperConsole.Implementations
 		[SerializeField] SpacingStyle _spacingStyle = SpacingStyle.Spacious;
 
 		Dictionary<string, IConsoleCommand> _commands = new Dictionary<string, IConsoleCommand>();
+		List<IPreProcessCommand> _preProcessCommands = new List<IPreProcessCommand>();
 
 		[SerializeField] int _indentSize = 8;
 
@@ -65,9 +66,16 @@ namespace FedoraDev.DeveloperConsole.Implementations
 					//This is a flag
 					string[] flagParts = part.Split('=');
 					if (flagParts.Length > 1)
-						flags.Add(flagParts[0].ToCharArray()[1], flagParts[1]);
+					{
+						for (int j = 1; j < flagParts[0].Length - 1; j++)
+							flags.Add(flagParts[0].ToCharArray()[j], "true");
+						flags.Add(flagParts[0].ToCharArray()[flagParts[0].Length - 1], flagParts[1]);
+					}
 					else
-						flags.Add(flagParts[0].ToCharArray()[1], "true");
+					{
+						for (int j = 1; j < flagParts[0].Length; j++)
+							flags.Add(flagParts[0].ToCharArray()[j], "true");
+					}
 				}
 				else
 				{

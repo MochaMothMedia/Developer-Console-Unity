@@ -75,6 +75,68 @@ When a user types `help echo`, this gives the console the proper strings to prin
 ### Add a Command to the Console
 Once you have a command created that implements `IConsoleCommand`, you can add the command to the list on the `ConsoleCommandBehaviour` component located on the Developer Console Game Object. Next time you run the game, your command will be loaded in with the rest. To test, you can use the builtin `help` command to get a list of the available commands.
 
+### Create a Pre Processor
+Pre processors allow you to modify command inputs before they're executed which provides you with more control over the entire console. I've created `ClipPreProcessor` which talks to the `Clip` command and allows you to insert copied values into commands dynamically. One good example would be to grab the ID of an entity with one command and then using that same ID as an argument in another.
+
+```C#
+public class ClipPreProcessor : IPreProcessCommand
+{
+	public IDeveloperConsole DeveloperConsole { get; set; }
+
+	public string PreProcess(string input)
+	{
+		ClipCommand spillCommand = DeveloperConsole.GetCommand<ClipCommand>();
+		Regex regex = new Regex(@"\[[0-9]+\]", RegexOptions.ExplicitCapture);
+		MatchCollection matches = regex.Matches(input);
+
+		foreach (Match match in matches)
+		{
+			GroupCollection groups = match.Groups;
+
+			foreach (Group group in groups)
+			{
+				string intString = group.Value.Substring(1, group.Value.Length - 2);
+				if (int.TryParse(intString, out int intValue))
+					input = input.Replace(group.Value, spillCommand.GetBuffer(intValue));
+			}
+		}
+
+		return input;
+	}
+}
+```
+
+##### DeveloperConsole
+```C#
+public IDeveloperConsole DeveloperConsole { get; set; }
+```
+This stores the `IDeveloperConsole` that's used for this pre processor. This will be set when the pre processor is registered to the developer console.
+
+##### PreProcess
+```C#
+public string PreProcess(string input)
+{
+	ClipCommand spillCommand = DeveloperConsole.GetCommand<ClipCommand>();
+	Regex regex = new Regex(@"\[[0-9]+\]", RegexOptions.ExplicitCapture);
+	MatchCollection matches = regex.Matches(input);
+
+	foreach (Match match in matches)
+	{
+		GroupCollection groups = match.Groups;
+
+		foreach (Group group in groups)
+		{
+			string intString = group.Value.Substring(1, group.Value.Length - 2);
+			if (int.TryParse(intString, out int intValue))
+				input = input.Replace(group.Value, spillCommand.GetBuffer(intValue));
+		}
+	}
+
+	return input;
+}
+```
+First, we grab a reference to the `ClipCommand` registered to the console. We use a Regex to find any instances of `[index]` within the command and swap them out for that index from the clip buffer. Afterwords, we return the input and the console will run the new command.
+
 ## Details
 ### Using Command Arguments
 The Command Arguments object contains a few useful nuggets of information for your command. For the below examples, assume the input received at the prompt is as follows:

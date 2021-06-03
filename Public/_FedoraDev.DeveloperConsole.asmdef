@@ -1,6 +1,6 @@
 {
     "name": "_FedoraDev.DeveloperConsole",
-    "rootNamespace": "",
+    "rootNamespace": "FedoraDev.DeveloperConsole",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

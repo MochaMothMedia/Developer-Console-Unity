@@ -1,14 +1,11 @@
 using FedoraDev.DeveloperConsole.Implementations.Commands;
 using System.Text.RegularExpressions;
-using UnityEngine;
 
 namespace FedoraDev.DeveloperConsole.Implementations.PreProcessors
 {
 	public class ClipPreProcessor : IPreProcessCommand
 	{
 		public IDeveloperConsole DeveloperConsole { get; set; }
-
-		[SerializeField] ClipCommand _clipCommand;
 
 		public string PreProcess(string input)
 		{

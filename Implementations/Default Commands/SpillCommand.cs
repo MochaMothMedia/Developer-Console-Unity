@@ -5,27 +5,29 @@ namespace FedoraDev.DeveloperConsole.Implementations.Commands
 	public class SpillCommand : IConsoleCommand
 	{
 		public string Name => "spill";
-		public string Usage => "spill {contents}";
+		public string Usage => "spill {command}";
 
 		IDeveloperConsole _developerConsole;
 		public IDeveloperConsole DeveloperConsole { get => _developerConsole; set => _developerConsole = value; }
 
-		public void Execute(ICommandArguments arguments)
+		public string Execute(ICommandArguments arguments)
 		{
+			string commandOutput = string.Empty;
+
 			if (arguments.ArgumentQuantity == 0)
 			{
 				_developerConsole.PushMessages(GetHelp(arguments));
-				return;
+				return commandOutput;
 			}
 
 			char[] alphabet = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 
-			_developerConsole.PushMessage($"Text Entered: {arguments.TextEntered.Substring(arguments.CommandName.Length + 1)}");
-			_developerConsole.PushMessage($"Command: {arguments.GetArgument(0)}");
-			_developerConsole.PushMessage($"Arguments: {arguments.ArgumentQuantity - 1}");
+			commandOutput += $"Text Entered: {arguments.TextEntered.Substring(arguments.CommandName.Length + 1)}\n";
+			commandOutput += $"Command: {arguments.GetArgument(0)}\n";
+			commandOutput += $"Arguments: {arguments.ArgumentQuantity - 1}\n";
 
 			for (int i = 1; i < arguments.ArgumentQuantity; i++)
-				_developerConsole.PushMessage($"        {i - 1}: {arguments.GetArgument(i)}");
+				commandOutput += $"        {i - 1}: {arguments.GetArgument(i)}\n";
 
 			List<char> assignedFlags = new List<char>();
 
@@ -36,19 +38,22 @@ namespace FedoraDev.DeveloperConsole.Implementations.Commands
 					assignedFlags.Add(flag);
 			}
 
-			_developerConsole.PushMessage($"Flags: {assignedFlags.Count}");
+			commandOutput += $"Flags: {assignedFlags.Count}\n";
 
 			for (int i = 0; i < assignedFlags.Count; i++)
-				_developerConsole.PushMessage($"        {assignedFlags[i]}: {arguments.GetFlag(assignedFlags[i])}");
+				commandOutput += $"        {assignedFlags[i]}: {arguments.GetFlag(assignedFlags[i])}\n";
+
+			commandOutput = commandOutput.Substring(0, commandOutput.Length - 1);
+			DeveloperConsole.PushMessages(commandOutput.Split('\n'));
+			return commandOutput;
 		}
 
 		public string[] GetHelp(ICommandArguments arguments)
 		{
 			return new string[] {
-			"Spills the command argument object contents of the given text.",
-			"Usage:",
-			Usage
-		};
+				"Spills the command argument object contents of the given command.",
+				$"Usage: {Usage}"
+			};
 		}
 	}
 }

@@ -8,9 +8,12 @@ namespace FedoraDev.DeveloperConsole.Implementations.Commands
 
 		IDeveloperConsole _developerConsole;
 
-		public void Execute(ICommandArguments arguments)
+		public string Execute(ICommandArguments arguments)
 		{
-			DeveloperConsole.PushMessage(arguments.TextEntered.Substring(arguments.CommandName.Length));
+			string commandOutput = arguments.TextEntered.Substring(arguments.CommandName.Length);
+			DeveloperConsole.PushMessage(commandOutput);
+
+			return commandOutput;
 		}
 
 		public string[] GetHelp(ICommandArguments arguments)

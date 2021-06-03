@@ -868,6 +868,7 @@ GameObject:
   - component: {fileID: 6277410858663919766}
   - component: {fileID: 6277410858663919752}
   - component: {fileID: 6277410858663919753}
+  - component: {fileID: -3768369730443682445}
   m_Layer: 5
   m_Name: Developer Console
   m_TagString: Untagged
@@ -1003,7 +1004,7 @@ MonoBehaviour:
       Data: 0|FedoraDev.DeveloperConsole.IConsoleCommand[], _FedoraDev.DeveloperConsole
     - Name: 
       Entry: 12
-      Data: 3
+      Data: 4
     - Name: 
       Entry: 7
       Data: 1|FedoraDev.DeveloperConsole.Implementations.Commands.ClearCommand, _FedoraDev.DeveloperConsole.Implementations
@@ -1018,7 +1019,60 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 3|FedoraDev.DeveloperConsole.Implementations.Commands.SpillCommand, _FedoraDev.DeveloperConsole.Implementations
+      Data: 3|FedoraDev.DeveloperConsole.Implementations.Commands.ClipCommand, _FedoraDev.DeveloperConsole.Implementations
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 4|FedoraDev.DeveloperConsole.Implementations.Commands.SpillCommand, _FedoraDev.DeveloperConsole.Implementations
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+--- !u!114 &-3768369730443682445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6277410858663919764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eb85663b7dff2847b003fcbae2689a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 6277410858663919752}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: _developerConsole
+      Entry: 10
+      Data: 0
+    - Name: _preProcessCommands
+      Entry: 7
+      Data: 0|FedoraDev.DeveloperConsole.IPreProcessCommand[], _FedoraDev.DeveloperConsole
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 1|FedoraDev.DeveloperConsole.Implementations.PreProcessors.ClipPreProcessor,
+        _FedoraDev.DeveloperConsole.Implementations
+    - Name: _clipCommand
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 

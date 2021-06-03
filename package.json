@@ -1,7 +1,7 @@
 {
 	"name": "com.fedoradev.developerconsole",
 	"displayName": "Developer Console",
-	"version": "1.0.0",
+	"version": "2.0.0",
 	"unity": "2020.3",
 	"unityRelease": "2f1",
 	"description": "A Console Window built to be extended and useful to any external system.",

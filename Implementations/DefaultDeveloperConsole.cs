@@ -1,22 +1,24 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace FedoraDev.DeveloperConsole.Implementations
 {
 	public class DefaultDeveloperConsole : IDeveloperConsole
 	{
+		#region Fields
 		[SerializeField] OverrideRule _overrideRule = OverrideRule.Ignore;
 		[SerializeField] SpacingStyle _spacingStyle = SpacingStyle.Spacious;
+		[SerializeField] int _indentSize = 8;
 
 		Dictionary<string, IConsoleCommand> _commands = new Dictionary<string, IConsoleCommand>();
 		List<IPreProcessCommand> _preProcessCommands = new List<IPreProcessCommand>();
-
-		[SerializeField] int _indentSize = 8;
-
 		string _messageLog;
 		int _indent = 0;
+		#endregion
 
+		#region Duplicate Command Handling
 		void ManageDuplicateCommandName(IConsoleCommand command)
 		{
 			PushMessage($"Command with name '{command.Name}' is already registered.");
@@ -28,21 +30,11 @@ namespace FedoraDev.DeveloperConsole.Implementations
 					break;
 
 				case OverrideRule.Replace:
-					PushMessage($"Command will be overridden.");
-					_commands[command.Name] = command;
+					HandleReplaceCommand(command);
 					break;
 
 				case OverrideRule.Rename:
-					PushMessage($"Command will be renamed.");
-
-					int increment = 1;
-					string newCommandName = $"{command.Name}_{increment}";
-
-					while (_commands.ContainsKey(newCommandName))
-						newCommandName = $"{command.Name}_{++increment}";
-
-					_commands.Add(newCommandName, command);
-					PushMessage($"Command will be named '{newCommandName}'");
+					HandleRenameCommand(command);
 					break;
 			}
 
@@ -50,14 +42,47 @@ namespace FedoraDev.DeveloperConsole.Implementations
 				PushMessage(string.Empty);
 		}
 
+		void HandleReplaceCommand(IConsoleCommand command)
+		{
+			PushMessage($"Command will be overridden");
+			_commands[command.Name] = command;
+		}
+
+		void HandleRenameCommand(IConsoleCommand command)
+		{
+			PushMessage($"Command will be renamed.");
+
+			int increment = 1;
+			string newCommandName = $"{command.Name}_{increment}";
+
+			while (_commands.ContainsKey(newCommandName))
+				newCommandName = $"{command.Name}_{++increment}";
+
+			_commands.Add(newCommandName, command);
+			PushMessage($"Command will be named '{newCommandName}'");
+		}
+		#endregion
+
+		#region Get Arguments and Flags
 		ICommandArguments GetArgumentsAndFlags(string input)
 		{
-			string[] inputParts = input.Split(' ');
+			Regex regex = new Regex(@"-[a-xA-Z]=(""([^""\\]*(?:\\.[^""\\]*)*)""|'([^'\\]*(?:\\.[^'\\]*)*)')|[^\s]+", RegexOptions.ExplicitCapture);
+			MatchCollection matches = regex.Matches(input);
+			List<string> inputParts = new List<string>();
+
+			foreach (Match match in matches)
+			{
+				GroupCollection groups = match.Groups;
+
+				foreach (Group group in groups)
+					inputParts.Add(group.Value);
+			}
+
 			string commandName = inputParts[0];
 			List<string> arguments = new List<string>();
 			Dictionary<char, string> flags = new Dictionary<char, string>();
 
-			for (int i = 1; i < inputParts.Length; i++)
+			for (int i = 1; i < inputParts.Count; i++)
 			{
 				string part = inputParts[i];
 
@@ -86,7 +111,9 @@ namespace FedoraDev.DeveloperConsole.Implementations
 
 			return new DefaultCommandArguments(input, commandName, arguments.ToArray(), flags);
 		}
+		#endregion
 
+		#region Handle Help Request
 		void HandleHelpRequest(ICommandArguments commandArguments)
 		{
 			if (commandArguments.ArgumentQuantity == 0)
@@ -97,7 +124,7 @@ namespace FedoraDev.DeveloperConsole.Implementations
 				PushMessage("{command name} [arguments|flags]");
 				if (_spacingStyle == SpacingStyle.Spacious)
 					PushMessage(string.Empty);
-				Deindent();
+				Dedent();
 
 				PushMessage("Available Commands:");
 
@@ -106,9 +133,7 @@ namespace FedoraDev.DeveloperConsole.Implementations
 					PushMessage($"{consoleCommand.Key}: {consoleCommand.Value.Usage}");
 				if (_spacingStyle == SpacingStyle.Spacious)
 					PushMessage(string.Empty);
-				Deindent();
-
-				Deindent();
+				Dedent();
 				return;
 			}
 			else
@@ -118,8 +143,10 @@ namespace FedoraDev.DeveloperConsole.Implementations
 						PushMessages(consoleCommand.Value.GetHelp(commandArguments));
 			}
 		}
+		#endregion
 
-		void HandleCommand(ICommandArguments commandArguments)
+		#region Handle Command
+		string HandleCommand(ICommandArguments commandArguments)
 		{
 			foreach (KeyValuePair<string, IConsoleCommand> consoleCommand in _commands)
 			{
@@ -127,8 +154,7 @@ namespace FedoraDev.DeveloperConsole.Implementations
 				{
 					try
 					{
-						consoleCommand.Value.Execute(commandArguments);
-						break;
+						return consoleCommand.Value.Execute(commandArguments);
 					}
 					catch (Exception e)
 					{
@@ -142,14 +168,19 @@ namespace FedoraDev.DeveloperConsole.Implementations
 						};
 
 						PushMessages(messages);
-						break;
+						return string.Empty;
 					}
 				}
 			}
-		}
 
+			return string.Empty;
+		}
+		#endregion
+
+		#region Handle Indention
 		void Indent() => _indent += _indentSize;
-		void Deindent() => _indent -= _indentSize;
+		void Dedent() => _indent -= _indentSize;
+		#endregion
 
 		#region IDeveloperConsole Implementation
 		public string MessageLog => _messageLog;
@@ -167,21 +198,74 @@ namespace FedoraDev.DeveloperConsole.Implementations
 			command.DeveloperConsole = this;
 		}
 
-		public void ProcessCommand(string input)
+		public void RegisterPreProcessCommand(IPreProcessCommand preProcessCommand)
+		{
+			if (_preProcessCommands == null)
+				_preProcessCommands = new List<IPreProcessCommand>();
+
+			_preProcessCommands.Add(preProcessCommand);
+			preProcessCommand.DeveloperConsole = this;
+		}
+
+		public T GetCommand<T>() where T : class, IConsoleCommand
+		{
+			foreach (KeyValuePair<string, IConsoleCommand> command in _commands)
+				if (command.Value is T)
+					return command.Value as T;
+
+			return null;
+		}
+
+		public T GetPreProcessCommand<T>() where T : class, IPreProcessCommand
+		{
+			foreach (IPreProcessCommand preProcessCommand in _preProcessCommands)
+				if (preProcessCommand is T)
+					return preProcessCommand as T;
+
+			return null;
+		}
+
+		public string ProcessCommand(string input)
 		{
 			PushMessage($"> {input}");
+			int indents = 0;
 			Indent();
+			indents++;
+
+			foreach (IPreProcessCommand preProcessCommand in _preProcessCommands)
+			{
+				string newInput = preProcessCommand.PreProcess(input);
+
+				if (newInput != input)
+				{
+					input = newInput;
+					PushMessage($"{input}");
+					Indent();
+					indents++;
+
+					if (string.IsNullOrWhiteSpace(input))
+					{
+						for (int i = 0; i < indents; i++)
+							Dedent();
+						return string.Empty;
+					}
+				}
+			}
 
 			ICommandArguments commandArguments = GetArgumentsAndFlags(input);
+
+			string output = string.Empty;
 
 			if (commandArguments.CommandName == "help")
 				HandleHelpRequest(commandArguments);
 			else
-				HandleCommand(commandArguments);
+				output = HandleCommand(commandArguments);
 
 			if (_spacingStyle == SpacingStyle.Spacious)
 				PushMessage(string.Empty);
-			_indent = 0;
+			for (int i = 0; i < indents; i++)
+				Dedent();
+			return output;
 		}
 
 		public void PushMessage(string message)

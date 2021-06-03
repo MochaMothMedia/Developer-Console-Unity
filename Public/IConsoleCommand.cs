@@ -5,7 +5,7 @@ namespace FedoraDev.DeveloperConsole
         string Name { get; }
         string Usage { get; }
         IDeveloperConsole DeveloperConsole { get; set; }
-        void Execute(ICommandArguments arguments);
+        string Execute(ICommandArguments arguments);
         string[] GetHelp(ICommandArguments arguments);
     }
 }

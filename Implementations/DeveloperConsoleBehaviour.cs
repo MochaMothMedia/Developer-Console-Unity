@@ -30,10 +30,20 @@ namespace FedoraDev.DeveloperConsole.Implementations
 			command.DeveloperConsole = this;
 		}
 
-		public void ProcessCommand(string input)
+		public void RegisterPreProcessCommand(IPreProcessCommand preProcessCommand)
 		{
-			_console.ProcessCommand(input);
+			_console.RegisterPreProcessCommand(preProcessCommand);
+			preProcessCommand.DeveloperConsole = this;
+		}
+
+		public T GetCommand<T>() where T : class, IConsoleCommand => _console.GetCommand<T>();
+		public T GetPreProcessCommand<T>() where T : class, IPreProcessCommand => _console.GetPreProcessCommand<T>();
+
+		public string ProcessCommand(string input)
+		{
+			string output = _console.ProcessCommand(input);
 			UpdateConsoleWindow();
+			return output;
 		}
 
 		public void PushMessage(string message)

@@ -137,6 +137,9 @@ public string PreProcess(string input)
 ```
 First, we grab a reference to the `ClipCommand` registered to the console. We use a Regex to find any instances of `[index]` within the command and swap them out for that index from the clip buffer. Afterwords, we return the input and the console will run the new command.
 
+### Add Pre Processor to the Console
+Similar to how we add commands to the console, we have a `PreProcessCommandBehaviour` with a reference to the console behaviour. During the awake method, these pre processors are registered to the console.
+
 ## Details
 ### Using Command Arguments
 The Command Arguments object contains a few useful nuggets of information for your command. For the below examples, assume the input received at the prompt is as follows:

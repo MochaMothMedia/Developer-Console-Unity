@@ -63,5 +63,7 @@ namespace FedoraDev.DeveloperConsole.Implementations
 			_console.ClearLog();
 			UpdateConsoleWindow();
 		}
+
+		public void SetActive(bool active) => gameObject.SetActive(active);
 	}
 }

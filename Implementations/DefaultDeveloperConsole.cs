@@ -283,6 +283,8 @@ namespace FedoraDev.DeveloperConsole.Implementations
 		{
 			_messageLog = string.Empty;
 		}
+
+		public void SetActive(bool active) { }
 		#endregion
 	}
 }

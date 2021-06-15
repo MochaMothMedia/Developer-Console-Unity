@@ -4,6 +4,7 @@ namespace FedoraDev.DeveloperConsole
     {
         string MessageLog { get; }
 
+        void SetActive(bool active);
         void RegisterCommand(IConsoleCommand command);
 		void RegisterPreProcessCommand(IPreProcessCommand preProcessCommand);
         T GetCommand<T>() where T : class, IConsoleCommand;

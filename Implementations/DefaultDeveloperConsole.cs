@@ -134,6 +134,15 @@ namespace FedoraDev.DeveloperConsole.Implementations
 				if (_spacingStyle == SpacingStyle.Spacious)
 					PushMessage(string.Empty);
 				Dedent();
+
+				PushMessage("Available Preprocessors:");
+
+				Indent();
+				foreach (IPreProcessCommand preProcessCommand in _preProcessCommands)
+					PushMessage($"{preProcessCommand.Name}: {preProcessCommand.Usage}");
+				if (_spacingStyle == SpacingStyle.Spacious)
+					PushMessage(string.Empty);
+				Dedent();
 				return;
 			}
 			else
@@ -141,6 +150,20 @@ namespace FedoraDev.DeveloperConsole.Implementations
 				foreach (KeyValuePair<string, IConsoleCommand> consoleCommand in _commands)
 					if (commandArguments.GetArgument(0) == consoleCommand.Key)
 						PushMessages(consoleCommand.Value.GetHelp(commandArguments));
+
+				if (_spacingStyle == SpacingStyle.Spacious)
+					PushMessage(string.Empty);
+
+				foreach (IPreProcessCommand preProcessCommand in _preProcessCommands)
+				{
+					if (commandArguments.GetArgument(0) == preProcessCommand.Name)
+					{
+						PushMessage("Preprocessor:");
+						Indent();
+						PushMessages(preProcessCommand.GetHelp(commandArguments));
+						Dedent();
+					}
+				}
 			}
 		}
 		#endregion

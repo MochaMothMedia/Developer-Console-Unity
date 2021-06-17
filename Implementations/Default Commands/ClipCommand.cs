@@ -13,6 +13,9 @@ namespace FedoraDev.DeveloperConsole.Implementations.Commands
 
 		public string GetBuffer(int index)
 		{
+			if (_buffer == null)
+				_buffer = new Dictionary<int, string>();
+
 			if (_buffer.ContainsKey(index))
 				return _buffer[index];
 			return string.Empty;
@@ -37,7 +40,7 @@ namespace FedoraDev.DeveloperConsole.Implementations.Commands
 
 		public string Execute(ICommandArguments arguments)
 		{
-			string commandOutput = string.Empty;
+			List<string> commandOutput = new List<string>();
 			string flagI = arguments.GetFlag('i');
 			string flagL = arguments.GetFlag('l');
 			int index = 0;
@@ -45,12 +48,12 @@ namespace FedoraDev.DeveloperConsole.Implementations.Commands
 			if (!string.IsNullOrEmpty(flagL))
 			{
 				ListBuffer();
-				return commandOutput;
+				return string.Join("\n", commandOutput);
 			}
 
 			if (!string.IsNullOrEmpty(flagI))
 				if (!int.TryParse(flagI, out index))
-					commandOutput += $"-i={flagI} is not a valid integer and will be placed at -i=0 instead.";
+					commandOutput.Add($"-i={flagI} is not a valid integer and will be placed at -i=0 instead.");
 
 			if (string.IsNullOrWhiteSpace(arguments.GetFlag('c')))
 			{
@@ -59,6 +62,7 @@ namespace FedoraDev.DeveloperConsole.Implementations.Commands
 					copyText.Add(arguments.GetArgument(i));
 
 				string textToCopy = string.Join(" ", copyText);
+				commandOutput.Add(textToCopy);
 				CopyToBuffer(textToCopy, index);
 			}
 			else
@@ -79,11 +83,12 @@ namespace FedoraDev.DeveloperConsole.Implementations.Commands
 				foreach (string command in commands)
 				{
 					string output = DeveloperConsole.ProcessCommand(command);
+					commandOutput.Add(output);
 					CopyToBuffer(output, index);
 				}
 			}
 
-			return commandOutput;
+			return string.Join("\n", commandOutput);
 		}
 
 		public string[] GetHelp(ICommandArguments arguments)
@@ -93,7 +98,8 @@ namespace FedoraDev.DeveloperConsole.Implementations.Commands
 				$"Usage: {Usage}",
 				"Flags:",
 				"    -c=\"[command]\":\tCopies the output of the command stored in quotes.",
-				"    -i=[index]:\t\tSpecifies an index to store the clip for multiple clip storage."
+				"    -i=[index]:\t\tSpecifies an index to store the clip for multiple clip storage.",
+				"    -l: Displays a list of the current clip buffer."
 			};
 		}
 	}

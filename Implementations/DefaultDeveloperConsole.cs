@@ -297,7 +297,7 @@ namespace FedoraDev.DeveloperConsole.Implementations
 					Dedent();
 
 				if (commandPipeline.Length > i + 1)
-					commandPipeline[i + 1] += output;
+					commandPipeline[i + 1] += $" {output}";
 			}
 
 			return output;

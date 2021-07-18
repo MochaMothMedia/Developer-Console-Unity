@@ -250,44 +250,56 @@ namespace FedoraDev.DeveloperConsole.Implementations
 
 		public string ProcessCommand(string input)
 		{
-			PushMessage($"> {input}");
-			int indents = 0;
-			Indent();
-			indents++;
+			string[] commandPipeline = input.Split('|');
+			string output = "";
 
-			foreach (IPreProcessCommand preProcessCommand in _preProcessCommands)
+			for (int i = 0; i < commandPipeline.Length; i++)
 			{
-				string newInput = preProcessCommand.PreProcess(input);
+				string command = commandPipeline[i].Trim();
 
-				if (newInput != input)
+				PushMessage($"> {command}");
+				int indents = 0;
+				Indent();
+				indents++;
+
+				foreach (IPreProcessCommand preProcessCommand in _preProcessCommands)
 				{
-					input = newInput;
-					PushMessage($"{input}");
-					Indent();
-					indents++;
+					string newInput = preProcessCommand.PreProcess(command);
 
-					if (string.IsNullOrWhiteSpace(input))
+					if (newInput != command)
 					{
-						for (int i = 0; i < indents; i++)
-							Dedent();
-						return string.Empty;
+						command = newInput;
+						PushMessage($"{command}");
+						Indent();
+						indents++;
+
+						if (string.IsNullOrWhiteSpace(command))
+						{
+							for (int j = 0; j < indents; j++)
+								Dedent();
+							return string.Empty;
+						}
 					}
 				}
+
+				ICommandArguments commandArguments = GetArgumentsAndFlags(command);
+
+				output = string.Empty;
+
+				if (commandArguments.CommandName == "help")
+					HandleHelpRequest(commandArguments);
+				else
+					output = HandleCommand(commandArguments);
+
+				if (_spacingStyle == SpacingStyle.Spacious)
+					PushMessage(string.Empty);
+				for (int j = 0; j < indents; j++)
+					Dedent();
+
+				if (commandPipeline.Length > i + 1)
+					commandPipeline[i + 1] += output;
 			}
 
-			ICommandArguments commandArguments = GetArgumentsAndFlags(input);
-
-			string output = string.Empty;
-
-			if (commandArguments.CommandName == "help")
-				HandleHelpRequest(commandArguments);
-			else
-				output = HandleCommand(commandArguments);
-
-			if (_spacingStyle == SpacingStyle.Spacious)
-				PushMessage(string.Empty);
-			for (int i = 0; i < indents; i++)
-				Dedent();
 			return output;
 		}
 

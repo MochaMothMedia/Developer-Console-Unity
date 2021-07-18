@@ -10,10 +10,38 @@ namespace FedoraDev.DeveloperConsole.Implementations
 		[SerializeField, HideLabel, BoxGroup("Console")] IDeveloperConsole _console;
 		[SerializeField] TMP_Text _logField;
 		[SerializeField] Scrollbar _scrollbar;
+		[SerializeField] bool _catchEditorLogs = true;
+
+		private void OnEnable()
+		{
+			Application.logMessageReceived += HandleLog;
+		}
+
+		private void OnDisable()
+		{
+			Application.logMessageReceived -= HandleLog;
+		}
 
 		private void Start()
 		{
 			UpdateConsoleWindow();
+		}
+
+		void HandleLog(string logString, string stackTrace, LogType logType)
+		{
+			if (!_catchEditorLogs)
+				return;
+
+			PushMessages(new string[]
+			{
+				$"--- {logType} ---",
+				logString
+			});
+
+			if (logType == LogType.Exception)
+				PushMessage(stackTrace);
+
+			PushMessage(string.Empty);
 		}
 
 		void UpdateConsoleWindow()

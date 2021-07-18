@@ -120,8 +120,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6277410858902682242}
   m_HandleRect: {fileID: 6277410858902682241}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -163,7 +163,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.025, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -5, y: 0}
+  m_AnchoredPosition: {x: -4.999939, y: 0}
   m_SizeDelta: {x: -10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6277410857999142030
@@ -1004,7 +1004,7 @@ MonoBehaviour:
       Data: 0|FedoraDev.DeveloperConsole.IConsoleCommand[], _FedoraDev.DeveloperConsole
     - Name: 
       Entry: 12
-      Data: 4
+      Data: 5
     - Name: 
       Entry: 7
       Data: 1|FedoraDev.DeveloperConsole.Implementations.Commands.ClearCommand, _FedoraDev.DeveloperConsole.Implementations
@@ -1026,6 +1026,12 @@ MonoBehaviour:
     - Name: 
       Entry: 7
       Data: 4|FedoraDev.DeveloperConsole.Implementations.Commands.SpillCommand, _FedoraDev.DeveloperConsole.Implementations
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 5|FedoraDev.DeveloperConsole.Implementations.DebugCommand, _FedoraDev.DeveloperConsole.Implementations
     - Name: 
       Entry: 8
       Data: 
@@ -1070,9 +1076,6 @@ MonoBehaviour:
       Entry: 7
       Data: 1|FedoraDev.DeveloperConsole.Implementations.PreProcessors.ClipPreProcessor,
         _FedoraDev.DeveloperConsole.Implementations
-    - Name: _clipCommand
-      Entry: 6
-      Data: 
     - Name: 
       Entry: 8
       Data: 

@@ -1,17 +1,46 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace FedoraDev.DeveloperConsole.Implementations
 {
-	public class DefaultDeveloperConsole : IDeveloperConsole
+	public class DefaultDeveloperConsole : IDeveloperConsole, IDisposable
 	{
+		StreamWriter LogFileWriter
+		{
+			get
+			{
+				if (_logFileWriter == null)
+				{
+					DateTime now = DateTime.UtcNow;
+
+					string directoryName = $"{Application.persistentDataPath}/Logging Output";
+					if (!Directory.Exists(directoryName))
+						Directory.CreateDirectory(directoryName);
+
+					string filename = $"{directoryName}/{now.Year:0000}-{now.Month:00}-{now.Day:00}-{now.Hour:00}-{now.Minute:00}-{now.Second:00}-{now.Millisecond:000}.txt";
+					if (!File.Exists(filename))
+					{
+						FileStream newFileStream = File.Create(filename);
+						newFileStream.Close();
+						newFileStream.Dispose();
+					}
+
+					_logFileWriter = new StreamWriter(filename, true);
+				}
+
+				return _logFileWriter;
+			}
+		}
+
 		#region Fields
 		[SerializeField] OverrideRule _overrideRule = OverrideRule.Ignore;
 		[SerializeField] SpacingStyle _spacingStyle = SpacingStyle.Spacious;
 		[SerializeField] int _indentSize = 8;
 
+		StreamWriter _logFileWriter;
 		Dictionary<string, IConsoleCommand> _commands = new Dictionary<string, IConsoleCommand>();
 		List<IPreProcessCommand> _preProcessCommands = new List<IPreProcessCommand>();
 		string _messageLog;
@@ -305,13 +334,32 @@ namespace FedoraDev.DeveloperConsole.Implementations
 
 		public void PushMessage(string message)
 		{
-			_messageLog += $"\n{new string(' ', _indent)}{message}";
+			string log = $"\n{new string(' ', _indent)}{message}";
+			_messageLog += log;
+			LogFileWriter.Write(log);
+			LogFileWriter.Flush();
 		}
 
 		public void PushMessages(string[] messages)
 		{
-			foreach (string message in messages)
-				PushMessage(message);
+			string logs = $"\n{string.Join($"\n{new string(' ', _indent)}", messages)}";
+			_messageLog += logs;
+			LogFileWriter.Write(logs);
+			LogFileWriter.Flush();
+		}
+
+		public void PushMessageIndented(string message)
+		{
+			Indent();
+			PushMessage(message);
+			Dedent();
+		}
+
+		public void PushMessagesIndented(string[] messages)
+		{
+			Indent();
+			PushMessages(messages);
+			Dedent();
 		}
 
 		public void ClearLog()
@@ -320,6 +368,17 @@ namespace FedoraDev.DeveloperConsole.Implementations
 		}
 
 		public void SetActive(bool active) { }
+		#endregion
+
+		#region IDisposable Implementation
+		public void Dispose()
+		{
+			if (_logFileWriter != null)
+			{
+				_logFileWriter.Close();
+				_logFileWriter.Dispose();
+			}
+		}
 		#endregion
 	}
 }

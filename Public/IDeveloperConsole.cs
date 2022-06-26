@@ -12,6 +12,8 @@ namespace FedoraDev.DeveloperConsole
         string ProcessCommand(string input);
         void PushMessage(string message);
         void PushMessages(string[] messages);
+        void PushMessageIndented(string message);
+        void PushMessagesIndented(string[] messages);
         void ClearLog();
 	}
 }

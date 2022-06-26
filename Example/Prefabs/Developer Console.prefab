@@ -120,8 +120,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6277410858902682242}
   m_HandleRect: {fileID: 6277410858902682241}
   m_Direction: 0
-  m_Value: 1
-  m_Size: 0.99999994
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -869,6 +869,7 @@ GameObject:
   - component: {fileID: 6277410858663919752}
   - component: {fileID: 6277410858663919753}
   - component: {fileID: -3768369730443682445}
+  - component: {fileID: 2742880172841067872}
   m_Layer: 5
   m_Name: Developer Console
   m_TagString: Untagged
@@ -1086,6 +1087,18 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+--- !u!114 &2742880172841067872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6277410858663919764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c14dc392d0bcd6642b2e18a4e759f267, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6277410858684992339
 GameObject:
   m_ObjectHideFlags: 0

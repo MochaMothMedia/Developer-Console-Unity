@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ namespace FedoraDev.DeveloperConsole.Implementations
 		[SerializeField] TMP_Text _logField;
 		[SerializeField] Scrollbar _scrollbar;
 		[SerializeField] bool _catchEditorLogs = true;
+		[SerializeField, ShowIf("_catchEditorLogs")] bool _showStackTraceOnError = true;
 
 		private void OnEnable()
 		{
@@ -32,16 +34,33 @@ namespace FedoraDev.DeveloperConsole.Implementations
 			if (!_catchEditorLogs)
 				return;
 
-			PushMessages(new string[]
+			string richTextColor = string.Empty;
+
+			switch (logType)
 			{
-				$"--- {logType} ---",
-				logString
-			});
+				case LogType.Error:
+					richTextColor = "<color=\"red\">";
+					break;
+				case LogType.Assert:
+					richTextColor = "<color=\"green\">";
+					break;
+				case LogType.Warning:
+					richTextColor = "<color=\"yellow\">";
+					break;
+				case LogType.Log:
+					richTextColor = "<color=\"white\">";
+					break;
+				case LogType.Exception:
+					richTextColor = "<color=#AA0000>";
+					break;
+				default:
+					break;
+			}
 
-			if (logType == LogType.Exception)
-				PushMessage(stackTrace);
+			PushMessage($"{DateTime.Now.Minute:00}:{DateTime.Now.Second:00}:{DateTime.Now.Millisecond:000} - {richTextColor}{logType}</color> - {logString}");
 
-			PushMessage(string.Empty);
+			if (logType == LogType.Exception && _showStackTraceOnError)
+				PushMessagesIndented(stackTrace.Split('\n'));
 		}
 
 		void UpdateConsoleWindow()
@@ -83,6 +102,18 @@ namespace FedoraDev.DeveloperConsole.Implementations
 		public void PushMessages(string[] messages)
 		{
 			_console.PushMessages(messages);
+			UpdateConsoleWindow();
+		}
+
+		public void PushMessageIndented(string message)
+		{
+			_console.PushMessageIndented(message);
+			UpdateConsoleWindow();
+		}
+
+		public void PushMessagesIndented(string[] messages)
+		{
+			_console.PushMessagesIndented(messages);
 			UpdateConsoleWindow();
 		}
 

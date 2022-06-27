@@ -6,6 +6,7 @@ namespace FedoraDev.DeveloperConsole
     {
         LoggingLevel LoggingLevel { get; set; }
         string MessageLog { get; }
+        int BufferCount { get; }
 
         void SetActive(bool active);
         void RegisterCommand(IConsoleCommand command);
@@ -17,6 +18,7 @@ namespace FedoraDev.DeveloperConsole
         void PushMessages(string[] messages);
         void PushMessageIndented(string message, int indentLevel = 1);
         void PushMessagesIndented(string[] messages, int indentLevel = 1);
+        string GetCommandFromBuffer(int index);
         void ClearLog();
 	}
 }

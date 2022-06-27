@@ -12,6 +12,7 @@ namespace FedoraDev.DeveloperConsole.Examples
 
 		TMP_InputField _inputField;
 		bool _isFocused = false;
+		int _commandBufferIndex = 0;
 
 		private void Awake()
 		{
@@ -28,6 +29,28 @@ namespace FedoraDev.DeveloperConsole.Examples
 				_developerConsole.ProcessCommand(_inputField.text);
 				_inputField.text = string.Empty;
 				_inputField.OnPointerClick(new PointerEventData(FindObjectOfType<EventSystem>()));
+				_commandBufferIndex = 0;
+			}
+			else if (_isFocused && Input.GetKeyDown(KeyCode.UpArrow))
+			{
+				_commandBufferIndex++;
+				if (_commandBufferIndex > _developerConsole.BufferCount)
+					_commandBufferIndex--;
+				if (_commandBufferIndex == 0)
+					_inputField.text = string.Empty;
+				else
+					_inputField.text = _developerConsole.GetCommandFromBuffer(_commandBufferIndex - 1);
+			}
+			else if (_isFocused && Input.GetKeyDown(KeyCode.DownArrow))
+			{
+				_commandBufferIndex--;
+				if (_commandBufferIndex <= 0)
+				{
+					_commandBufferIndex = 0;
+					_inputField.text = string.Empty;
+				}
+				else
+					_inputField.text = _developerConsole.GetCommandFromBuffer(_commandBufferIndex - 1);
 			}
 			else
 				_isFocused = _inputField.isFocused;

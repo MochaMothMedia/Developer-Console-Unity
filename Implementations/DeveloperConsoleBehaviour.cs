@@ -10,14 +10,13 @@ namespace FedoraDev.DeveloperConsole.Implementations
 	public class DeveloperConsoleBehaviour : SerializedMonoBehaviour, IDeveloperConsole
 	{
 		public LoggingLevel LoggingLevel { get => _console.LoggingLevel; set => _console.LoggingLevel = value; }
+		public int BufferCount => _console.BufferCount;
 
 		[SerializeField, HideLabel, BoxGroup("Console")] IDeveloperConsole _console;
 		[SerializeField] TMP_Text _logField;
 		[SerializeField] Scrollbar _scrollbar;
 		[SerializeField] bool _catchEditorLogs = true;
 		[SerializeField, ShowIf("_catchEditorLogs")] bool _showStackTraceOnError = true;
-
-		List<string> _commandBuffer = new List<string>();
 
 		private void OnEnable()
 		{
@@ -105,7 +104,6 @@ namespace FedoraDev.DeveloperConsole.Implementations
 
 		public string ProcessCommand(string input)
 		{
-			_commandBuffer.Add(input);
 			string output = _console.ProcessCommand(input);
 			UpdateConsoleWindow();
 			return output;
@@ -139,6 +137,11 @@ namespace FedoraDev.DeveloperConsole.Implementations
 		{
 			_console.ClearLog();
 			UpdateConsoleWindow();
+		}
+
+		public string GetCommandFromBuffer(int index)
+		{
+			return _console.GetCommandFromBuffer(index);
 		}
 
 		public void Dispose()

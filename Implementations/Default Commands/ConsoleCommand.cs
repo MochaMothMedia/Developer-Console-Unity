@@ -13,8 +13,6 @@ namespace FedoraDev.DeveloperConsole.Implementations
 
 		Dictionary<string, Func<ICommandArguments, string>> _subCommands;
 
-		[SerializeField] DeveloperConsoleBehaviour _developerConsoleBehaviour;
-
 		public string Execute(ICommandArguments arguments)
 		{
 			_subCommands = new Dictionary<string, Func<ICommandArguments, string>>();
@@ -69,7 +67,7 @@ namespace FedoraDev.DeveloperConsole.Implementations
 					level = GetLoggingLevelFromArgument(arguments.GetArgument(2));
 					if (level == LoggingLevel.None)
 						return string.Empty;
-					_developerConsoleBehaviour.LoggingLevel |= level;
+					DeveloperConsole.LoggingLevel |= level;
 					LogCurrentLoggingLevels();
 					break;
 
@@ -82,7 +80,7 @@ namespace FedoraDev.DeveloperConsole.Implementations
 					level = GetLoggingLevelFromArgument(arguments.GetArgument(2));
 					if (level == LoggingLevel.None)
 						return string.Empty;
-					_developerConsoleBehaviour.LoggingLevel ^= level;
+					DeveloperConsole.LoggingLevel ^= level;
 					LogCurrentLoggingLevels();
 					break;
 
@@ -90,7 +88,7 @@ namespace FedoraDev.DeveloperConsole.Implementations
 					level = GetLoggingLevelFromArgument(arguments.GetArgument(1));
 					if (level == LoggingLevel.None)
 						return string.Empty;
-					DeveloperConsole.PushMessage($"{Enum.GetName(typeof(LoggingLevel), level)}: {_developerConsoleBehaviour.LoggingLevel.HasFlag(level)}");
+					DeveloperConsole.PushMessage($"{Enum.GetName(typeof(LoggingLevel), level)}: {DeveloperConsole.LoggingLevel.HasFlag(level)}");
 					break;
 			}
 
@@ -113,8 +111,8 @@ namespace FedoraDev.DeveloperConsole.Implementations
 
 		void LogCurrentLoggingLevels()
 		{
-			DeveloperConsole.PushMessage($"Current Logging Flags: {_developerConsoleBehaviour.LoggingLevel}");
-			DeveloperConsole.PushMessage($"Other Logging Flags: {LoggingLevelHelpers.LoggingLevelAll ^ _developerConsoleBehaviour.LoggingLevel}");
+			DeveloperConsole.PushMessage($"Current Logging Flags: {DeveloperConsole.LoggingLevel}");
+			DeveloperConsole.PushMessage($"Other Logging Flags: {LoggingLevelHelpers.LoggingLevelAll ^ DeveloperConsole.LoggingLevel}");
 		}
 	}
 }

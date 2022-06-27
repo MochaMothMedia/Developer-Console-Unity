@@ -9,6 +9,7 @@ namespace FedoraDev.DeveloperConsole.Implementations
 	public class DefaultDeveloperConsole : IDeveloperConsole
 	{
 		public LoggingLevel LoggingLevel { get => _loggingLevel; set => _loggingLevel = value; }
+		public int BufferCount => _commandBuffer == null ? 0 : _commandBuffer.Count;
 		StreamWriter LogFileWriter
 		{
 			get
@@ -48,6 +49,7 @@ namespace FedoraDev.DeveloperConsole.Implementations
 		List<IPreProcessCommand> _preProcessCommands = new List<IPreProcessCommand>();
 		string _messageLog;
 		int _indent = 0;
+		List<string> _commandBuffer = new List<string>();
 		#endregion
 
 		#region Duplicate Command Handling
@@ -285,6 +287,9 @@ namespace FedoraDev.DeveloperConsole.Implementations
 
 		public string ProcessCommand(string input)
 		{
+			if (_commandBuffer == null)
+				_commandBuffer = new List<string>();
+			_commandBuffer.Insert(0, input);
 			string[] commandPipeline = input.Split('|');
 			string output = "";
 
@@ -375,6 +380,14 @@ namespace FedoraDev.DeveloperConsole.Implementations
 		public void ClearLog()
 		{
 			_messageLog = string.Empty;
+		}
+
+		public string GetCommandFromBuffer(int index)
+		{
+			if (_commandBuffer.Count > index)
+				return _commandBuffer[index];
+			else
+				return _commandBuffer[_commandBuffer.Count - 1];
 		}
 
 		public void SetActive(bool active) { }

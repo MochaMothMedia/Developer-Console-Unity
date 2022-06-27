@@ -1,7 +1,10 @@
+using System;
+
 namespace FedoraDev.DeveloperConsole
 {
-    public interface IDeveloperConsole
+    public interface IDeveloperConsole : IDisposable
     {
+        LoggingLevel LoggingLevel { get; set; }
         string MessageLog { get; }
 
         void SetActive(bool active);
@@ -12,8 +15,8 @@ namespace FedoraDev.DeveloperConsole
         string ProcessCommand(string input);
         void PushMessage(string message);
         void PushMessages(string[] messages);
-        void PushMessageIndented(string message);
-        void PushMessagesIndented(string[] messages);
+        void PushMessageIndented(string message, int indentLevel = 1);
+        void PushMessagesIndented(string[] messages, int indentLevel = 1);
         void ClearLog();
 	}
 }

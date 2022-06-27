@@ -660,7 +660,21 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "> echo hello world\n        hello world"
+  m_text: "37:52:023 - Log - The below is only an example of what this area might
+    look like. Once the game starts, this area is cleared.\n\n37:53:952 - <color=\"green\">Assert</color>
+    -  Nunc mi ipsum faucibu\n37:55:484 - <color=\"white\">Log</color> - lisis mauris.
+    Non curabitur gravida arcu ac tortor dignissim convallis aenean et. Bibendum
+    arcu v\n37:55:508 - <color=\"white\">Log</color> - s at tellus. Nunc mi ipsum
+    faucibus vitae aliquet nec ullamcorper sit\n39:06:607 - <color=\"white\">Log</color>
+    - ac tortor dignissim convallis aenean et. Bibendum arcu v\n39:07:781 - <color=\"yellow\">Warning</color>
+    - met. Elementum integer enim neque volutpat ac tincidunt vitae. Faucibus nis\n39:07:808
+    - <color=\"red\">Error</color> - cidunt vitae. Faucibus nisl tincidunt eget nullam
+    non. Dictum non consectetur a erat nam at lectus urna. Viverra orci sagittis
+    eu volutpat odio facilisis mauris.\n39:07:833 - <color=#AA0000>Exception</color>
+    - Exception: non consectetur a erat nam at lectus urna. Viverra orci sagittis
+    eu volutpat odio facilisis mauris\nUnityEngine.Debug:LogException(Exception)\n       
+    DebugTest:Update() (at Assets/Developer Console/Example/Scripts/DebugTest.cs:56)\n\n>
+    echo hello world\n        hello world"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -687,7 +701,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
+  m_fontSize: 15
   m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
@@ -869,7 +883,6 @@ GameObject:
   - component: {fileID: 6277410858663919752}
   - component: {fileID: 6277410858663919753}
   - component: {fileID: -3768369730443682445}
-  - component: {fileID: 2742880172841067872}
   m_Layer: 5
   m_Name: Developer Console
   m_TagString: Untagged
@@ -970,12 +983,17 @@ MonoBehaviour:
     - Name: _indentSize
       Entry: 3
       Data: 8
+    - Name: _maxVisibleCharacters
+      Entry: 3
+      Data: 8000
     - Name: 
       Entry: 8
       Data: 
+  _loggingLevel: 15
   _logField: {fileID: 6277410858258664264}
   _scrollbar: {fileID: 6277410858370022757}
   _catchEditorLogs: 1
+  _showStackTraceOnError: 1
 --- !u!114 &6277410858663919753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1006,7 +1024,7 @@ MonoBehaviour:
       Data: 0|FedoraDev.DeveloperConsole.IConsoleCommand[], _FedoraDev.DeveloperConsole
     - Name: 
       Entry: 12
-      Data: 5
+      Data: 6
     - Name: 
       Entry: 7
       Data: 1|FedoraDev.DeveloperConsole.Implementations.Commands.ClearCommand, _FedoraDev.DeveloperConsole.Implementations
@@ -1034,6 +1052,12 @@ MonoBehaviour:
     - Name: 
       Entry: 7
       Data: 5|FedoraDev.DeveloperConsole.Implementations.DebugCommand, _FedoraDev.DeveloperConsole.Implementations
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 6|FedoraDev.DeveloperConsole.Implementations.ConsoleCommand, _FedoraDev.DeveloperConsole.Implementations
     - Name: 
       Entry: 8
       Data: 
@@ -1087,18 +1111,6 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
---- !u!114 &2742880172841067872
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6277410858663919764}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c14dc392d0bcd6642b2e18a4e759f267, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6277410858684992339
 GameObject:
   m_ObjectHideFlags: 0
@@ -1730,7 +1742,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20.6
+  m_fontSize: 28.9
   m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 1

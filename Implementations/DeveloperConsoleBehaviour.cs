@@ -1,5 +1,6 @@
 using Sirenix.OdinInspector;
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,11 +9,15 @@ namespace FedoraDev.DeveloperConsole.Implementations
 {
 	public class DeveloperConsoleBehaviour : SerializedMonoBehaviour, IDeveloperConsole
 	{
+		public LoggingLevel LoggingLevel { get => _console.LoggingLevel; set => _console.LoggingLevel = value; }
+
 		[SerializeField, HideLabel, BoxGroup("Console")] IDeveloperConsole _console;
 		[SerializeField] TMP_Text _logField;
 		[SerializeField] Scrollbar _scrollbar;
 		[SerializeField] bool _catchEditorLogs = true;
 		[SerializeField, ShowIf("_catchEditorLogs")] bool _showStackTraceOnError = true;
+
+		List<string> _commandBuffer = new List<string>();
 
 		private void OnEnable()
 		{
@@ -29,35 +34,47 @@ namespace FedoraDev.DeveloperConsole.Implementations
 			UpdateConsoleWindow();
 		}
 
+		private void OnDestroy()
+		{
+			_console.Dispose();
+		}
+
 		void HandleLog(string logString, string stackTrace, LogType logType)
 		{
 			if (!_catchEditorLogs)
 				return;
 
+			if ((logType == LogType.Log       && !LoggingLevel.HasFlag(LoggingLevel.Message))   ||
+			    (logType == LogType.Warning   && !LoggingLevel.HasFlag(LoggingLevel.Warning))   ||
+			    (logType == LogType.Error     && !LoggingLevel.HasFlag(LoggingLevel.Error))     ||
+			    (logType == LogType.Exception && !LoggingLevel.HasFlag(LoggingLevel.Exception)) ||
+			    (logType == LogType.Assert    && !LoggingLevel.HasFlag(LoggingLevel.Assertion)))
+			   return;
+
 			string richTextColor = string.Empty;
 
 			switch (logType)
 			{
-				case LogType.Error:
-					richTextColor = "<color=\"red\">";
-					break;
-				case LogType.Assert:
-					richTextColor = "<color=\"green\">";
+				case LogType.Log:
+					richTextColor = "<color=\"white\">";
 					break;
 				case LogType.Warning:
 					richTextColor = "<color=\"yellow\">";
 					break;
-				case LogType.Log:
-					richTextColor = "<color=\"white\">";
+				case LogType.Error:
+					richTextColor = "<color=\"red\">";
 					break;
 				case LogType.Exception:
 					richTextColor = "<color=#AA0000>";
+					break;
+				case LogType.Assert:
+					richTextColor = "<color=\"green\">";
 					break;
 				default:
 					break;
 			}
 
-			PushMessage($"{DateTime.Now.Minute:00}:{DateTime.Now.Second:00}:{DateTime.Now.Millisecond:000} - {richTextColor}{logType}</color> - {logString}");
+			PushMessage($"{DateTime.Now.Minute:00}:{DateTime.Now.Second:00}:{DateTime.Now.Millisecond:000} - {Time.frameCount} - {richTextColor}{logType}</color> - {logString}");
 
 			if (logType == LogType.Exception && _showStackTraceOnError)
 				PushMessagesIndented(stackTrace.Split('\n'));
@@ -88,6 +105,7 @@ namespace FedoraDev.DeveloperConsole.Implementations
 
 		public string ProcessCommand(string input)
 		{
+			_commandBuffer.Add(input);
 			string output = _console.ProcessCommand(input);
 			UpdateConsoleWindow();
 			return output;
@@ -105,15 +123,15 @@ namespace FedoraDev.DeveloperConsole.Implementations
 			UpdateConsoleWindow();
 		}
 
-		public void PushMessageIndented(string message)
+		public void PushMessageIndented(string message, int indentLevel = 1)
 		{
-			_console.PushMessageIndented(message);
+			_console.PushMessageIndented(message, indentLevel);
 			UpdateConsoleWindow();
 		}
 
-		public void PushMessagesIndented(string[] messages)
+		public void PushMessagesIndented(string[] messages, int indentLevel = 1)
 		{
-			_console.PushMessagesIndented(messages);
+			_console.PushMessagesIndented(messages, indentLevel);
 			UpdateConsoleWindow();
 		}
 
@@ -121,6 +139,11 @@ namespace FedoraDev.DeveloperConsole.Implementations
 		{
 			_console.ClearLog();
 			UpdateConsoleWindow();
+		}
+
+		public void Dispose()
+		{
+			_console.Dispose();
 		}
 
 		public void SetActive(bool active) => gameObject.SetActive(active);

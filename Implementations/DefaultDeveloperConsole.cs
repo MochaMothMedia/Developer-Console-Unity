@@ -6,8 +6,9 @@ using UnityEngine;
 
 namespace FedoraDev.DeveloperConsole.Implementations
 {
-	public class DefaultDeveloperConsole : IDeveloperConsole, IDisposable
+	public class DefaultDeveloperConsole : IDeveloperConsole
 	{
+		public LoggingLevel LoggingLevel { get => _loggingLevel; set => _loggingLevel = value; }
 		StreamWriter LogFileWriter
 		{
 			get
@@ -38,7 +39,9 @@ namespace FedoraDev.DeveloperConsole.Implementations
 		#region Fields
 		[SerializeField] OverrideRule _overrideRule = OverrideRule.Ignore;
 		[SerializeField] SpacingStyle _spacingStyle = SpacingStyle.Spacious;
+		[SerializeField] LoggingLevel _loggingLevel = LoggingLevel.Message | LoggingLevel.Warning | LoggingLevel.Error | LoggingLevel.Exception;
 		[SerializeField] int _indentSize = 8;
+		[SerializeField] int _maxVisibleCharacters = 8000;
 
 		StreamWriter _logFileWriter;
 		Dictionary<string, IConsoleCommand> _commands = new Dictionary<string, IConsoleCommand>();
@@ -128,7 +131,10 @@ namespace FedoraDev.DeveloperConsole.Implementations
 					else
 					{
 						for (int j = 1; j < flagParts[0].Length; j++)
-							flags.Add(flagParts[0].ToCharArray()[j], "true");
+							if (flags.ContainsKey(flagParts[0].ToCharArray()[j]))
+								flags[flagParts[0].ToCharArray()[j]] = "true";
+							else
+								flags.Add(flagParts[0].ToCharArray()[j], "true");
 					}
 				}
 				else
@@ -230,8 +236,8 @@ namespace FedoraDev.DeveloperConsole.Implementations
 		#endregion
 
 		#region Handle Indention
-		void Indent() => _indent += _indentSize;
-		void Dedent() => _indent -= _indentSize;
+		void Indent(int indentLevel = 1) => _indent += _indentSize * indentLevel;
+		void Dedent(int indentLevel = 1) => _indent -= _indentSize * indentLevel;
 		#endregion
 
 		#region IDeveloperConsole Implementation
@@ -336,30 +342,34 @@ namespace FedoraDev.DeveloperConsole.Implementations
 		{
 			string log = $"\n{new string(' ', _indent)}{message}";
 			_messageLog += log;
+			if (_messageLog.Length > _maxVisibleCharacters)
+				_messageLog = _messageLog.Substring(_messageLog.Length - _maxVisibleCharacters);
 			LogFileWriter.Write(log);
-			LogFileWriter.Flush();
+			_logFileWriter.Flush();
 		}
 
 		public void PushMessages(string[] messages)
 		{
-			string logs = $"\n{string.Join($"\n{new string(' ', _indent)}", messages)}";
+			string logs = string.Join($"\n{new string(' ', _indent)}", messages);
 			_messageLog += logs;
+			if (_messageLog.Length > _maxVisibleCharacters)
+				_messageLog = _messageLog.Substring(_messageLog.Length - _maxVisibleCharacters);
 			LogFileWriter.Write(logs);
-			LogFileWriter.Flush();
+			_logFileWriter.Flush();
 		}
 
-		public void PushMessageIndented(string message)
+		public void PushMessageIndented(string message, int indentLevel = 1)
 		{
-			Indent();
+			Indent(indentLevel);
 			PushMessage(message);
-			Dedent();
+			Dedent(indentLevel);
 		}
 
-		public void PushMessagesIndented(string[] messages)
+		public void PushMessagesIndented(string[] messages, int indentLevel = 1)
 		{
-			Indent();
+			Indent(indentLevel);
 			PushMessages(messages);
-			Dedent();
+			Dedent(indentLevel);
 		}
 
 		public void ClearLog()

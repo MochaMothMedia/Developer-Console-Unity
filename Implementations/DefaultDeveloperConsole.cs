@@ -208,32 +208,31 @@ namespace FedoraDev.DeveloperConsole.Implementations
 		#region Handle Command
 		string HandleCommand(ICommandArguments commandArguments)
 		{
-			foreach (KeyValuePair<string, IConsoleCommand> consoleCommand in _commands)
+			try
 			{
-				if (commandArguments.CommandName == consoleCommand.Key)
-				{
-					try
-					{
-						return consoleCommand.Value.Execute(commandArguments);
-					}
-					catch (Exception e)
-					{
-						string[] messages = new string[]
-						{
-						$"There was an error while running the command.",
-						$"'{commandArguments.CommandName}'",
-						$"Produced:",
-						$"{e.Message}",
-						$"{e.StackTrace}"
-						};
-
-						PushMessages(messages);
-						return string.Empty;
-					}
-				}
+				IConsoleCommand command = _commands[commandArguments.CommandName];
+				return command.Execute(commandArguments);
 			}
+			catch (KeyNotFoundException keyNotFoundException)
+			{
+				Debug.LogError(keyNotFoundException.Message);
+				PushMessage($"Command '{commandArguments.CommandName}' not found. Use command 'help' for available commands.");
+				return string.Empty;
+			}
+			catch (Exception exception)
+			{
+				string[] messages = new string[]
+				{
+					$"There was an error while running the command.",
+					$"'{commandArguments.CommandName}'",
+					$"Produced:",
+					$"{exception.Message}",
+					$"{exception.StackTrace}"
+				};
 
-			return string.Empty;
+				PushMessages(messages);
+				return string.Empty;
+			}
 		}
 		#endregion
 
@@ -355,7 +354,7 @@ namespace FedoraDev.DeveloperConsole.Implementations
 
 		public void PushMessages(string[] messages)
 		{
-			string logs = string.Join($"\n{new string(' ', _indent)}", messages);
+			string logs = "\n" + string.Join($"\n{new string(' ', _indent)}", messages);
 			_messageLog += logs;
 			if (_messageLog.Length > _maxVisibleCharacters)
 				_messageLog = _messageLog.Substring(_messageLog.Length - _maxVisibleCharacters);

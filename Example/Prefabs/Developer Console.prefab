@@ -702,7 +702,7 @@ MonoBehaviour:
     serializedVersion: 2
     rgba: 4294967295
   m_fontSize: 15
-  m_fontSizeBase: 20
+  m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -980,6 +980,9 @@ MonoBehaviour:
     - Name: _spacingStyle
       Entry: 3
       Data: 1
+    - Name: _loggingLevel
+      Entry: 3
+      Data: 2
     - Name: _indentSize
       Entry: 3
       Data: 8
@@ -989,7 +992,6 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  _loggingLevel: 15
   _logField: {fileID: 6277410858258664264}
   _scrollbar: {fileID: 6277410858370022757}
   _catchEditorLogs: 1
@@ -1742,7 +1744,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28.9
+  m_fontSize: 20.6
   m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 1

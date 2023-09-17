@@ -1,4 +1,4 @@
-﻿namespace FedoraDev.DeveloperConsole.Implementations
+﻿namespace MochaMoth.DeveloperConsole.Implementations
 {
 	public enum OverrideRule
 	{

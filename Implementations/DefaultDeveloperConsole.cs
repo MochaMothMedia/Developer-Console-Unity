@@ -4,7 +4,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-namespace FedoraDev.DeveloperConsole.Implementations
+namespace MochaMoth.DeveloperConsole.Implementations
 {
 	public class DefaultDeveloperConsole : IDeveloperConsole
 	{

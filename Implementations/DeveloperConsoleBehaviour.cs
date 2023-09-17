@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace FedoraDev.DeveloperConsole.Implementations
+namespace MochaMoth.DeveloperConsole.Implementations
 {
 	public class DeveloperConsoleBehaviour : SerializedMonoBehaviour, IDeveloperConsole
 	{

@@ -2,7 +2,7 @@ using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FedoraDev.DeveloperConsole.Implementations
+namespace MochaMoth.DeveloperConsole.Implementations
 {
 	public class PreProcessCommandBehaviour : SerializedMonoBehaviour
 	{

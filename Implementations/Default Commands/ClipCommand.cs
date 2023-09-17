@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace FedoraDev.DeveloperConsole.Implementations.Commands
+namespace MochaMoth.DeveloperConsole.Implementations.Commands
 {
 	public class ClipCommand : IConsoleCommand
 	{

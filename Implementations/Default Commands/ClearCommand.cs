@@ -1,4 +1,4 @@
-namespace FedoraDev.DeveloperConsole.Implementations.Commands
+namespace MochaMoth.DeveloperConsole.Implementations.Commands
 {
 	public class ClearCommand : IConsoleCommand
 	{

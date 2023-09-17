@@ -1,6 +1,6 @@
 using System;
 
-namespace FedoraDev.DeveloperConsole
+namespace MochaMoth.DeveloperConsole
 {
     [Flags]
     public enum LoggingLevel

@@ -1,7 +1,7 @@
-using FedoraDev.DeveloperConsole.Implementations.Commands;
+using MochaMoth.DeveloperConsole.Implementations.Commands;
 using System.Text.RegularExpressions;
 
-namespace FedoraDev.DeveloperConsole.Implementations.PreProcessors
+namespace MochaMoth.DeveloperConsole.Implementations.PreProcessors
 {
 	public class ClipPreProcessor : IPreProcessCommand
 	{

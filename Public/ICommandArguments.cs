@@ -1,4 +1,4 @@
-namespace FedoraDev.DeveloperConsole
+namespace MochaMoth.DeveloperConsole
 {
     public interface ICommandArguments
     {

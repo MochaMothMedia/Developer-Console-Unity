@@ -1,7 +1,7 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace FedoraDev.DeveloperConsole.Implementations
+namespace MochaMoth.DeveloperConsole.Implementations
 {
 	public class ConsoleCommandBehaviour : SerializedMonoBehaviour
 	{

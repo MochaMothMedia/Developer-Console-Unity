@@ -1,6 +1,6 @@
 using System;
 
-namespace FedoraDev.DeveloperConsole
+namespace MochaMoth.DeveloperConsole
 {
     public interface IDeveloperConsole : IDisposable
     {

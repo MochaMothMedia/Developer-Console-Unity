@@ -120,8 +120,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6277410858902682242}
   m_HandleRect: {fileID: 6277410858902682241}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -972,17 +972,17 @@ MonoBehaviour:
     SerializationNodes:
     - Name: _console
       Entry: 7
-      Data: 0|FedoraDev.DeveloperConsole.Implementations.DefaultDeveloperConsole,
-        _FedoraDev.DeveloperConsole.Implementations
+      Data: 0|MochaMoth.DeveloperConsole.Implementations.DefaultDeveloperConsole,
+        _MochaMoth.DeveloperConsole.Implementations
     - Name: _overrideRule
       Entry: 3
-      Data: 1
+      Data: 0
     - Name: _spacingStyle
       Entry: 3
       Data: 1
     - Name: _loggingLevel
       Entry: 3
-      Data: 2
+      Data: 15
     - Name: _indentSize
       Entry: 3
       Data: 8
@@ -1023,43 +1023,37 @@ MonoBehaviour:
       Data: 0
     - Name: _commands
       Entry: 7
-      Data: 0|FedoraDev.DeveloperConsole.IConsoleCommand[], _FedoraDev.DeveloperConsole
+      Data: 0|MochaMoth.DeveloperConsole.IConsoleCommand[], _MochaMoth.DeveloperConsole
     - Name: 
       Entry: 12
-      Data: 6
+      Data: 5
     - Name: 
       Entry: 7
-      Data: 1|FedoraDev.DeveloperConsole.Implementations.Commands.ClearCommand, _FedoraDev.DeveloperConsole.Implementations
+      Data: 1|MochaMoth.DeveloperConsole.Implementations.DebugCommand, _MochaMoth.DeveloperConsole.Implementations
     - Name: 
       Entry: 8
       Data: 
     - Name: 
       Entry: 7
-      Data: 2|FedoraDev.DeveloperConsole.Implementations.Commands.EchoCommand, _FedoraDev.DeveloperConsole.Implementations
+      Data: 2|MochaMoth.DeveloperConsole.Implementations.Commands.ClearCommand, _MochaMoth.DeveloperConsole.Implementations
     - Name: 
       Entry: 8
       Data: 
     - Name: 
       Entry: 7
-      Data: 3|FedoraDev.DeveloperConsole.Implementations.Commands.ClipCommand, _FedoraDev.DeveloperConsole.Implementations
+      Data: 3|MochaMoth.DeveloperConsole.Implementations.Commands.ClipCommand, _MochaMoth.DeveloperConsole.Implementations
     - Name: 
       Entry: 8
       Data: 
     - Name: 
       Entry: 7
-      Data: 4|FedoraDev.DeveloperConsole.Implementations.Commands.SpillCommand, _FedoraDev.DeveloperConsole.Implementations
+      Data: 4|MochaMoth.DeveloperConsole.Implementations.Commands.EchoCommand, _MochaMoth.DeveloperConsole.Implementations
     - Name: 
       Entry: 8
       Data: 
     - Name: 
       Entry: 7
-      Data: 5|FedoraDev.DeveloperConsole.Implementations.DebugCommand, _FedoraDev.DeveloperConsole.Implementations
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 6|FedoraDev.DeveloperConsole.Implementations.ConsoleCommand, _FedoraDev.DeveloperConsole.Implementations
+      Data: 5|MochaMoth.DeveloperConsole.Implementations.Commands.SpillCommand, _MochaMoth.DeveloperConsole.Implementations
     - Name: 
       Entry: 8
       Data: 
@@ -1096,14 +1090,14 @@ MonoBehaviour:
       Data: 0
     - Name: _preProcessCommands
       Entry: 7
-      Data: 0|FedoraDev.DeveloperConsole.IPreProcessCommand[], _FedoraDev.DeveloperConsole
+      Data: 0|MochaMoth.DeveloperConsole.IPreProcessCommand[], _MochaMoth.DeveloperConsole
     - Name: 
       Entry: 12
       Data: 1
     - Name: 
       Entry: 7
-      Data: 1|FedoraDev.DeveloperConsole.Implementations.PreProcessors.ClipPreProcessor,
-        _FedoraDev.DeveloperConsole.Implementations
+      Data: 1|MochaMoth.DeveloperConsole.Implementations.PreProcessors.ClipPreProcessor,
+        _MochaMoth.DeveloperConsole.Implementations
     - Name: 
       Entry: 8
       Data: 
@@ -1608,7 +1602,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00012207031}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &6277410859405542089

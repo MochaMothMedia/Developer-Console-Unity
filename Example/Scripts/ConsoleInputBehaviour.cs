@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace FedoraDev.DeveloperConsole.Examples
+namespace MochaMoth.DeveloperConsole.Examples
 {
 	[RequireComponent(typeof(TMP_InputField))]
 	public class ConsoleInputBehaviour : SerializedMonoBehaviour

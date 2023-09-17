@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace FedoraDev.DeveloperConsole.Implementations.Commands
+namespace MochaMoth.DeveloperConsole.Implementations.Commands
 {
 	public class SpillCommand : IConsoleCommand
 	{

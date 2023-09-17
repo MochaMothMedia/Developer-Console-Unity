@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace FedoraDev.DeveloperConsole.Implementations
+namespace MochaMoth.DeveloperConsole.Implementations
 {
 	public struct DefaultCommandArguments : ICommandArguments
 	{

@@ -1,0 +1,94 @@
+{
+    "version": 1,
+    "name": "Sample Input Actions",
+    "maps": [
+        {
+            "name": "Enter",
+            "id": "dd22f15d-bd1e-4ba1-86aa-b44bc9ecc7f3",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "080ae004-8b0e-46f3-935f-f0883e32bd15",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "49748101-2801-4b5d-8d12-802f00476b71",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Up",
+            "id": "e5d32e98-25f6-494e-ad4e-07b4c2a6023b",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "c8fdc03b-a06a-4e32-9fd8-9ecb908522d8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "03dee10b-8fe8-4f02-a4d2-497af35e737e",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Down",
+            "id": "c44ead33-1a56-4c38-bf7d-dd500e00dba5",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "0ef30692-b20a-4bd7-b42b-80e16a1bae8e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "f05d5c71-7556-418a-a85f-14a7a712e4b1",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

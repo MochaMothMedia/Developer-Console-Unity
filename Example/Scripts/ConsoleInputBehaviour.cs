@@ -2,6 +2,7 @@ using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 namespace MochaMoth.DeveloperConsole.Examples
 {
@@ -9,6 +10,9 @@ namespace MochaMoth.DeveloperConsole.Examples
 	public class ConsoleInputBehaviour : SerializedMonoBehaviour
 	{
 		[SerializeField] IDeveloperConsole _developerConsole;
+		[SerializeField] InputActionReference _enterAction;
+		[SerializeField] InputActionReference _upAction;
+		[SerializeField] InputActionReference _downAction;
 
 		TMP_InputField _inputField;
 		bool _isFocused = false;
@@ -19,41 +23,93 @@ namespace MochaMoth.DeveloperConsole.Examples
 			_inputField = GetComponent<TMP_InputField>();
 		}
 
+		private void OnEnable()
+		{
+			_enterAction.action.performed += ReturnAction;
+			_upAction.action.performed += UpAction;
+			_downAction.action.performed += DownAction;
+		}
+
+		private void OnDisable()
+		{
+			_enterAction.action.performed -= ReturnAction;
+			_upAction.action.performed -= UpAction;
+			_downAction.action.performed -= DownAction;
+		}
+
 		private void Update()
 		{
 			if (_developerConsole == null)
 				return;
 
-			if (_isFocused && Input.GetKeyDown(KeyCode.Return))
-			{
-				_developerConsole.ProcessCommand(_inputField.text);
-				_inputField.text = string.Empty;
-				_inputField.OnPointerClick(new PointerEventData(FindObjectOfType<EventSystem>()));
-				_commandBufferIndex = 0;
-			}
-			else if (_isFocused && Input.GetKeyDown(KeyCode.UpArrow))
-			{
-				_commandBufferIndex++;
-				if (_commandBufferIndex > _developerConsole.BufferCount)
-					_commandBufferIndex--;
-				if (_commandBufferIndex == 0)
-					_inputField.text = string.Empty;
-				else
-					_inputField.text = _developerConsole.GetCommandFromBuffer(_commandBufferIndex - 1);
-			}
-			else if (_isFocused && Input.GetKeyDown(KeyCode.DownArrow))
-			{
+			_isFocused = _inputField.isFocused;
+
+			// if (_isFocused && Input.GetKeyDown(KeyCode.Return))
+			// {
+			// 	// _developerConsole.ProcessCommand(_inputField.text);
+			// 	// _inputField.text = string.Empty;
+			// 	// _inputField.OnPointerClick(new PointerEventData(FindObjectOfType<EventSystem>()));
+			// 	// _commandBufferIndex = 0;
+			// }
+			// else if (_isFocused && Input.GetKeyDown(KeyCode.UpArrow))
+			// {
+			// 	// _commandBufferIndex++;
+			// 	// if (_commandBufferIndex > _developerConsole.BufferCount)
+			// 	// 	_commandBufferIndex--;
+			// 	// if (_commandBufferIndex == 0)
+			// 	// 	_inputField.text = string.Empty;
+			// 	// else
+			// 	// 	_inputField.text = _developerConsole.GetCommandFromBuffer(_commandBufferIndex - 1);
+			// }
+			// else if (_isFocused && Input.GetKeyDown(KeyCode.DownArrow))
+			// {
+			// 	// _commandBufferIndex--;
+			// 	// if (_commandBufferIndex <= 0)
+			// 	// {
+			// 	// 	_commandBufferIndex = 0;
+			// 	// 	_inputField.text = string.Empty;
+			// 	// }
+			// 	// else
+			// 	// 	_inputField.text = _developerConsole.GetCommandFromBuffer(_commandBufferIndex - 1);
+			// }
+			// else
+		}
+
+		private void ReturnAction(InputAction.CallbackContext _)
+		{
+			if (!_isFocused) return;
+
+			_developerConsole.ProcessCommand(_inputField.text);
+			_inputField.text = string.Empty;
+			_inputField.OnPointerClick(new PointerEventData(FindAnyObjectByType<EventSystem>()));
+			_commandBufferIndex = 0;
+		}
+
+		private void UpAction(InputAction.CallbackContext _)
+		{
+			if (!_isFocused) return;
+			
+			_commandBufferIndex++;
+			if (_commandBufferIndex > _developerConsole.BufferCount)
 				_commandBufferIndex--;
-				if (_commandBufferIndex <= 0)
-				{
-					_commandBufferIndex = 0;
-					_inputField.text = string.Empty;
-				}
-				else
-					_inputField.text = _developerConsole.GetCommandFromBuffer(_commandBufferIndex - 1);
+			if (_commandBufferIndex == 0)
+				_inputField.text = string.Empty;
+			else
+				_inputField.text = _developerConsole.GetCommandFromBuffer(_commandBufferIndex - 1);
+		}
+
+		private void DownAction(InputAction.CallbackContext _)
+		{
+			if (!_isFocused) return;
+			
+			_commandBufferIndex--;
+			if (_commandBufferIndex <= 0)
+			{
+				_commandBufferIndex = 0;
+				_inputField.text = string.Empty;
 			}
 			else
-				_isFocused = _inputField.isFocused;
+				_inputField.text = _developerConsole.GetCommandFromBuffer(_commandBufferIndex - 1);
 		}
 	}
 }

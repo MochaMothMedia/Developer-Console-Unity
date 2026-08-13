@@ -1,9 +1,9 @@
 {
 	"name": "com.fedoradev.developerconsole",
 	"displayName": "Developer Console",
-	"version": "2.2.1",
-	"unity": "2020.3",
-	"unityRelease": "30f1",
+	"version": "2.3.1",
+	"unity": "6000.3",
+	"unityRelease": "21f1",
 	"description": "A Console Window built to be extended and useful to any external system.",
 	"author": {
 		"name": "Mocha Moth",

@@ -43,41 +43,11 @@ namespace MochaMoth.DeveloperConsole.Examples
 				return;
 
 			_isFocused = _inputField.isFocused;
-
-			// if (_isFocused && Input.GetKeyDown(KeyCode.Return))
-			// {
-			// 	// _developerConsole.ProcessCommand(_inputField.text);
-			// 	// _inputField.text = string.Empty;
-			// 	// _inputField.OnPointerClick(new PointerEventData(FindObjectOfType<EventSystem>()));
-			// 	// _commandBufferIndex = 0;
-			// }
-			// else if (_isFocused && Input.GetKeyDown(KeyCode.UpArrow))
-			// {
-			// 	// _commandBufferIndex++;
-			// 	// if (_commandBufferIndex > _developerConsole.BufferCount)
-			// 	// 	_commandBufferIndex--;
-			// 	// if (_commandBufferIndex == 0)
-			// 	// 	_inputField.text = string.Empty;
-			// 	// else
-			// 	// 	_inputField.text = _developerConsole.GetCommandFromBuffer(_commandBufferIndex - 1);
-			// }
-			// else if (_isFocused && Input.GetKeyDown(KeyCode.DownArrow))
-			// {
-			// 	// _commandBufferIndex--;
-			// 	// if (_commandBufferIndex <= 0)
-			// 	// {
-			// 	// 	_commandBufferIndex = 0;
-			// 	// 	_inputField.text = string.Empty;
-			// 	// }
-			// 	// else
-			// 	// 	_inputField.text = _developerConsole.GetCommandFromBuffer(_commandBufferIndex - 1);
-			// }
-			// else
 		}
 
 		private void ReturnAction(InputAction.CallbackContext _)
 		{
-			if (!_isFocused) return;
+			if (!_isFocused || _inputField.text.Length == 0) return;
 
 			_developerConsole.ProcessCommand(_inputField.text);
 			_inputField.text = string.Empty;

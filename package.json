@@ -1,12 +1,12 @@
 {
 	"name": "com.fedoradev.developerconsole",
 	"displayName": "Developer Console",
-	"version": "2.3.2",
+	"version": "2.3.3",
 	"unity": "6000.3",
 	"unityRelease": "21f1",
 	"description": "A Console Window built to be extended and useful to any external system.",
 	"author": {
 		"name": "Mocha Moth",
-		"email": "fedora.game.dev@gmail.com"
+		"email": "mochamoth@mochamoth.com"
 	}
 }
